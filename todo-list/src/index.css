@@ -39,6 +39,9 @@ body {
   border-radius: 8px;
   border: 2px solid #ccc;
   outline: none;
+
+
+  
 }
 
 .input-container input[type="text"]:focus {
