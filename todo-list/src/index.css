@@ -1,105 +1,152 @@
+/* Body with radiant/gradient background */
 body {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   margin: 0;
-  padding: 20px;
-  min-height: 100vh;
+  padding: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
+/* Container styling */
 .to-do-list {
+  width: 100%;
   max-width: 600px;
-  margin: 0 auto;
-  background: white;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  padding: 30px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.95); /* Slightly transparent for gradient to show */
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.to-do-list h1 {
   text-align: center;
-}
-
-h1 {
-  font-size: 2.5rem;
+  margin-bottom: 20px;
   color: #333;
-  margin-bottom: 30px;
 }
 
-input[type="text"] {
-  font-size: 1.1rem;
-  padding: 12px 15px;
-  width: 300px;
-  margin-right: 10px;
-  border: 2px solid #e0e0e0;
+/* Input field and add button */
+.input-container {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.input-container input[type="text"] {
+  flex: 1;
+  padding: 10px 12px;
+  font-size: 1rem;
   border-radius: 8px;
+  border: 2px solid #ccc;
   outline: none;
-  transition: border-color 0.3s ease;
 }
 
-input[type="text"]:focus {
+.input-container input[type="text"]:focus {
   border-color: #667eea;
 }
 
-button {
-  font-size: 0.9rem;
-  font-weight: 600;
-  padding: 8px 16px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  color: white;
-}
-
 .add-button {
+  padding: 10px 16px;
+  margin-left: 8px;
   background: #667eea;
-  padding: 12px 24px;
-  font-size: 1.1rem;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
 }
 
 .add-button:hover {
   background: #5a67d8;
-  transform: translateY(-1px);
 }
 
+/* List items */
 ol {
-  padding: 0;
-  list-style: none;
+  padding-left: 20px;
 }
 
 li {
-  background: #f8f9fa;
-  margin-bottom: 12px;
-  padding: 15px;
-  border-radius: 10px;
   display: flex;
   align-items: center;
-  gap: 10px;
-  border-left: 4px solid #667eea;
-  transition: transform 0.2s ease;
+  gap: 8px;
+  margin-bottom: 10px;
 }
 
-li:hover {
-  transform: translateX(5px);
-}
-
-.text {
+/* Task text */
+.task-text {
   flex: 1;
-  font-size: 1.1rem;
-  color: #333;
-  text-align: left;
 }
 
+/* Buttons */
+button {
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+/* Edit & Save */
+.edit-button {
+  background: #f6ad55;
+  color: white;
+}
+
+.edit-button:hover {
+  background: #ed8936;
+}
+
+.save-button {
+  background: #48bb78;
+  color: white;
+}
+
+.save-button:hover {
+  background: #38a169;
+}
+
+/* Done / Undo */
+.done-button {
+  background: #48bb78;
+  color: white;
+}
+
+.done-button:hover {
+  background: #38a169;
+}
+
+/* Delete */
 .delete-button {
-  background: #e53e3e;
+  background: #f56565;
+  color: white;
 }
 
 .delete-button:hover {
-  background: #c53030;
+  background: #e53e3e;
 }
 
-.moveUp-button, .movedown-button {
-  background: #38a169;
-  min-width: 50px;
+/* Move Up / Down */
+.moveUp-button,
+.moveDown-button {
+  background: #63b3ed;
+  color: white;
 }
 
-.moveUp-button:hover, .movedown-button:hover {
-  background: #2f855a;
+.moveUp-button:hover,
+.moveDown-button:hover {
+  background: #4299e1;
+}
+
+/* Editing input inside li */
+li input[type="text"] {
+  padding: 8px 10px;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 2px solid #e0e0e0;
+  outline: none;
+  flex: 1;
+}
+
+li input[type="text"]:focus {
+  border-color: #667eea;
 }
