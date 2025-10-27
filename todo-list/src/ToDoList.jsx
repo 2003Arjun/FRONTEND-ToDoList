@@ -1,60 +1,108 @@
 import React, { useState, useEffect } from "react";
 import { FaEdit, FaSave } from "react-icons/fa";
 import { motion } from "framer-motion";
+import { fetchApi } from './services/fetchApi';
+import { axiosApi } from './services/axiosApi';
 
 function ToDoList() {
-  const [tasks, setTasks] = useState(() => {
-    const savedTasks = localStorage.getItem("tasks");
-    return savedTasks
-      ? JSON.parse(savedTasks)
-      : [
-          { text: "Eat Breakfast", completed: false },
-          { text: "Take a walk", completed: false },
-          { text: "Take a shower", completed: false },
-        ];
-  });
-
+  const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState("");
   const [editingIndex, setEditingIndex] = useState(null);
   const [editedText, setEditedText] = useState("");
   const [loadingButton, setLoadingButton] = useState(null);
+  const [apiType, setApiType] = useState('fetch');
 
   useEffect(() => {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-  }, [tasks]);
+    loadTasks();
+  }, [apiType]);
+
+  const getApi = () => apiType === 'fetch' ? fetchApi : axiosApi;
+
+  async function loadTasks() {
+    try {
+      setLoadingButton('load');
+      const data = await getApi().getTodos();
+      const formattedTasks = data.map(item => ({
+        id: item.id,
+        text: item.title,
+        completed: item.completed
+      }));
+      setTasks(formattedTasks);
+    } catch (error) {
+      console.error('Error loading tasks:', error);
+      const savedTasks = localStorage.getItem("tasks");
+      setTasks(savedTasks ? JSON.parse(savedTasks) : []);
+    } finally {
+      setLoadingButton(null);
+    }
+  }
 
   function handleInputChange(event) {
     setNewTask(event.target.value);
   }
 
-  function addTask() {
+  async function addTask() {
     if (newTask.trim() !== "") {
       setLoadingButton('add');
-      setTimeout(() => {
-        setTasks([...tasks, { text: newTask, completed: false }]);
+      try {
+        const newTodo = {
+          title: newTask,
+          completed: false,
+          userId: 1
+        };
+        const createdTodo = await getApi().createTodo(newTodo);
+        setTasks([...tasks, {
+          id: createdTodo.id || Date.now(),
+          text: createdTodo.title,
+          completed: createdTodo.completed
+        }]);
         setNewTask("");
+      } catch (error) {
+        console.error('Error adding task:', error);
+        setTasks([...tasks, { id: Date.now(), text: newTask, completed: false }]);
+        setNewTask("");
+      } finally {
         setLoadingButton(null);
-      }, 2000);
+      }
     }
   }
 
-  function toggleTaskCompletion(index) {
+  async function toggleTaskCompletion(index) {
     setLoadingButton(`done-${index}`);
-    setTimeout(() => {
+    try {
+      const task = tasks[index];
+      const updatedTodo = {
+        ...task,
+        completed: !task.completed
+      };
+      await getApi().updateTodo(task.id, updatedTodo);
       const updatedTasks = [...tasks];
       updatedTasks[index].completed = !updatedTasks[index].completed;
       setTasks(updatedTasks);
+    } catch (error) {
+      console.error('Error updating task:', error);
+      const updatedTasks = [...tasks];
+      updatedTasks[index].completed = !updatedTasks[index].completed;
+      setTasks(updatedTasks);
+    } finally {
       setLoadingButton(null);
-    }, 2000);
+    }
   }
 
-  function deleteTask(index) {
+  async function deleteTask(index) {
     setLoadingButton(`delete-${index}`);
-    setTimeout(() => {
+    try {
+      const task = tasks[index];
+      await getApi().deleteTodo(task.id);
       const updatedTasks = tasks.filter((_, i) => i !== index);
       setTasks(updatedTasks);
+    } catch (error) {
+      console.error('Error deleting task:', error);
+      const updatedTasks = tasks.filter((_, i) => i !== index);
+      setTasks(updatedTasks);
+    } finally {
       setLoadingButton(null);
-    }, 2000);
+    }
   }
 
   function moveTaskUp(index) {
@@ -84,16 +132,54 @@ function ToDoList() {
     setEditedText(tasks[index].text);
   }
 
-  function saveEdit(index) {
-    const updatedTasks = [...tasks];
-    updatedTasks[index].text = editedText;
-    setTasks(updatedTasks);
-    setEditingIndex(null);
+  async function saveEdit(index) {
+    try {
+      const task = tasks[index];
+      const updatedTodo = {
+        ...task,
+        title: editedText
+      };
+      await getApi().updateTodo(task.id, updatedTodo);
+      const updatedTasks = [...tasks];
+      updatedTasks[index].text = editedText;
+      setTasks(updatedTasks);
+      setEditingIndex(null);
+    } catch (error) {
+      console.error('Error updating task:', error);
+      const updatedTasks = [...tasks];
+      updatedTasks[index].text = editedText;
+      setTasks(updatedTasks);
+      setEditingIndex(null);
+    }
   }
 
   return (
     <div className="to-do-list">
       <h1>My To-Do List</h1>
+      
+      <div className="api-selector">
+        <label>
+          <input
+            type="radio"
+            value="fetch"
+            checked={apiType === 'fetch'}
+            onChange={(e) => setApiType(e.target.value)}
+          />
+          Fetch API
+        </label>
+        <label>
+          <input
+            type="radio"
+            value="axios"
+            checked={apiType === 'axios'}
+            onChange={(e) => setApiType(e.target.value)}
+          />
+          Axios
+        </label>
+        <button onClick={loadTasks} disabled={loadingButton === 'load'}>
+          {loadingButton === 'load' ? 'Loading...' : 'Reload Tasks'}
+        </button>
+      </div>
       <div className="input-container">
         <input
           type="text"
@@ -121,7 +207,7 @@ function ToDoList() {
 
       <ol>
         {tasks.map((task, index) => (
-          <li key={index}>
+          <li key={task.id || index}>
             {editingIndex === index ? (
               <>
                 <input
