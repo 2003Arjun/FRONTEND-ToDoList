@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { fetchApi } from './services/fetchApi';
 import { axiosApi } from './services/axiosApi';
 
-function ToDoList() {
+function ToDoList({ onDataChange }) {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState("");
   const [editingIndex, setEditingIndex] = useState(null);
@@ -15,6 +15,15 @@ function ToDoList() {
   useEffect(() => {
     loadTasks();
   }, [apiType]);
+
+  useEffect(() => {
+    const completedTasks = tasks.filter(task => task.completed).length;
+    onDataChange?.({
+      tasks,
+      totalTasks: tasks.length,
+      completedTasks
+    });
+  }, [tasks, onDataChange]);
 
   const getApi = () => apiType === 'fetch' ? fetchApi : axiosApi;
 

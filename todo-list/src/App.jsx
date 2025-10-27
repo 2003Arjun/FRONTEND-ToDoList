@@ -18,6 +18,7 @@ function NotFound() {
 
 function App() {
   const [loading, setLoading] = useState(true);
+  const [todoData, setTodoData] = useState({ tasks: [], totalTasks: 0, completedTasks: 0 });
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -99,8 +100,8 @@ function App() {
         <div style={{ paddingTop: "100px", paddingBottom: "80px" }}>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/addtodo" element={<ToDoList />} />
-            <Route path="/about" element={<About />} />
+            <Route path="/addtodo" element={<ToDoList onDataChange={setTodoData} />} />
+            <Route path="/about" element={<About todoData={todoData} />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
