@@ -1,38 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { FaEdit, FaSave } from "react-icons/fa";
 import { motion } from "framer-motion";
-import { fetchApi } from './services/fetchApi';
-import { axiosApi } from './services/axiosApi';
-import { useTodo } from './context/TodoContext.jsx';
-
+import { todoAPI } from './services/api';
 function ToDoList() {
-  const { updateTodoData } = useTodo();
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState("");
   const [editingIndex, setEditingIndex] = useState(null);
   const [editedText, setEditedText] = useState("");
   const [loadingButton, setLoadingButton] = useState(null);
-  const [apiType, setApiType] = useState('fetch');
-
   useEffect(() => {
     loadTasks();
-  }, [apiType]);
+  }, []);
 
-  useEffect(() => {
-    const completedTasks = tasks.filter(task => task.completed).length;
-    updateTodoData({
-      tasks,
-      totalTasks: tasks.length,
-      completedTasks
-    });
-  }, [tasks, updateTodoData]);
 
-  const getApi = () => apiType === 'fetch' ? fetchApi : axiosApi;
 
   async function loadTasks() {
     try {
       setLoadingButton('load');
-      const data = await getApi().getTodos();
+      const data = await todoAPI.getTodos();
       const formattedTasks = data.map(item => ({
         id: item.id,
         text: item.title,
@@ -41,8 +26,7 @@ function ToDoList() {
       setTasks(formattedTasks);
     } catch (error) {
       console.error('Error loading tasks:', error);
-      const savedTasks = localStorage.getItem("tasks");
-      setTasks(savedTasks ? JSON.parse(savedTasks) : []);
+      setTasks([]);
     } finally {
       setLoadingButton(null);
     }
@@ -61,7 +45,7 @@ function ToDoList() {
           completed: false,
           userId: 1
         };
-        const createdTodo = await getApi().createTodo(newTodo);
+        const createdTodo = await todoAPI.createTodo(newTodo);
         setTasks([...tasks, {
           id: createdTodo.id || Date.now(),
           text: createdTodo.title,
@@ -86,7 +70,7 @@ function ToDoList() {
         ...task,
         completed: !task.completed
       };
-      await getApi().updateTodo(task.id, updatedTodo);
+      await todoAPI.updateTodo(task.id, updatedTodo);
       const updatedTasks = [...tasks];
       updatedTasks[index].completed = !updatedTasks[index].completed;
       setTasks(updatedTasks);
@@ -104,7 +88,7 @@ function ToDoList() {
     setLoadingButton(`delete-${index}`);
     try {
       const task = tasks[index];
-      await getApi().deleteTodo(task.id);
+      await todoAPI.deleteTodo(task.id);
       const updatedTasks = tasks.filter((_, i) => i !== index);
       setTasks(updatedTasks);
     } catch (error) {
@@ -150,7 +134,7 @@ function ToDoList() {
         ...task,
         title: editedText
       };
-      await getApi().updateTodo(task.id, updatedTodo);
+      await todoAPI.updateTodo(task.id, updatedTodo);
       const updatedTasks = [...tasks];
       updatedTasks[index].text = editedText;
       setTasks(updatedTasks);
@@ -168,29 +152,7 @@ function ToDoList() {
     <div className="to-do-list">
       <h1>My To-Do List</h1>
       
-      <div className="api-selector">
-        <label>
-          <input
-            type="radio"
-            value="fetch"
-            checked={apiType === 'fetch'}
-            onChange={(e) => setApiType(e.target.value)}
-          />
-          Fetch API
-        </label>
-        <label>
-          <input
-            type="radio"
-            value="axios"
-            checked={apiType === 'axios'}
-            onChange={(e) => setApiType(e.target.value)}
-          />
-          Axios
-        </label>
-        <button onClick={loadTasks} disabled={loadingButton === 'load'}>
-          {loadingButton === 'load' ? 'Loading...' : 'Reload Tasks'}
-        </button>
-      </div>
+
       <div className="input-container">
         <input
           type="text"

@@ -5,8 +5,10 @@ import StarBackground from "./StarBackground.jsx";
 import LoadingSpinner from "./LoadingSpinner.jsx";
 import Home from "./pages/Home.jsx";
 import About from "./pages/About.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import { FaGithub } from "react-icons/fa";
 import { useTodo } from "./context/TodoContext.jsx";
+import { useAuth } from "./context/AuthContext.jsx";
 
 
 function NotFound() {
@@ -20,6 +22,7 @@ function NotFound() {
 function App() {
   const [loading, setLoading] = useState(true);
   const { todoData } = useTodo();
+  const { user, logout, isAuthenticated } = useAuth();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -95,13 +98,45 @@ function App() {
           >
             About
           </Link>
+          
+          {isAuthenticated && (
+            <>
+              <span style={{ color: "#fff", margin: "0 20px" }}>Welcome, {user?.name}!</span>
+              <button
+                onClick={logout}
+                style={{
+                  background: "transparent",
+                  border: "1px solid #fff",
+                  color: "#fff",
+                  padding: "5px 15px",
+                  borderRadius: "5px",
+                  cursor: "pointer",
+                  transition: "0.3s",
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.background = "#fff";
+                  e.target.style.color = "#000";
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.background = "transparent";
+                  e.target.style.color = "#fff";
+                }}
+              >
+                Logout
+              </button>
+            </>
+          )}
         </nav>
 
         {/* 🧭 Page Routes */}
         <div style={{ paddingTop: "100px", paddingBottom: "80px" }}>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/addtodo" element={<ToDoList />} />
+            <Route path="/addtodo" element={
+              <ProtectedRoute>
+                <ToDoList />
+              </ProtectedRoute>
+            } />
             <Route path="/about" element={<About />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
