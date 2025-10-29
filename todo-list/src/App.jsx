@@ -6,6 +6,7 @@ import LoadingSpinner from "./LoadingSpinner.jsx";
 import Home from "./pages/Home.jsx";
 import About from "./pages/About.jsx";
 import { FaGithub } from "react-icons/fa";
+import { useTodo } from "./context/TodoContext.jsx";
 
 
 function NotFound() {
@@ -18,7 +19,7 @@ function NotFound() {
 
 function App() {
   const [loading, setLoading] = useState(true);
-  const [todoData, setTodoData] = useState({ tasks: [], totalTasks: 0, completedTasks: 0 });
+  const { todoData } = useTodo();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -100,8 +101,8 @@ function App() {
         <div style={{ paddingTop: "100px", paddingBottom: "80px" }}>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/addtodo" element={<ToDoList onDataChange={setTodoData} />} />
-            <Route path="/about" element={<About todoData={todoData} />} />
+            <Route path="/addtodo" element={<ToDoList />} />
+            <Route path="/about" element={<About />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>

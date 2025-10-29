@@ -3,8 +3,10 @@ import { FaEdit, FaSave } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { fetchApi } from './services/fetchApi';
 import { axiosApi } from './services/axiosApi';
+import { useTodo } from './context/TodoContext.jsx';
 
-function ToDoList({ onDataChange }) {
+function ToDoList() {
+  const { updateTodoData } = useTodo();
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState("");
   const [editingIndex, setEditingIndex] = useState(null);
@@ -18,12 +20,12 @@ function ToDoList({ onDataChange }) {
 
   useEffect(() => {
     const completedTasks = tasks.filter(task => task.completed).length;
-    onDataChange?.({
+    updateTodoData({
       tasks,
       totalTasks: tasks.length,
       completedTasks
     });
-  }, [tasks, onDataChange]);
+  }, [tasks, updateTodoData]);
 
   const getApi = () => apiType === 'fetch' ? fetchApi : axiosApi;
 
