@@ -1,93 +1,136 @@
 
----
 
-````markdown
-# Todo App (Fullstack Version)
+# 📝 Todo App (Fullstack Version)
 
-This is a **fullstack Todo App** project that includes both **frontend and backend (APIs)**.  
-It demonstrates user authentication, task management, and persistent storage using a database.
+A **fullstack Todo Application** that allows users to register, log in, and manage their daily tasks efficiently.
+This project demonstrates **user authentication**, **task management**, and **persistent data storage** using a backend API and database.
 
 ---
 
 ## 🚀 Features
-- User registration and login (JWT authentication)
-- Add, edit, delete tasks
-- Mark tasks as completed
-- Persistent storage with database (MongoDB or other, depending on configuration)
-- Backend APIs for task management
-- Frontend built for simple user interaction
+
+* 🔐 **User Authentication** (JWT-based login & registration)
+* ➕ **Add New Tasks**
+* ✏️ **Edit or Update Tasks**
+* ✅ **Mark Tasks as Completed**
+* ❌ **Delete Tasks**
+* 💾 **Persistent Data Storage** (MySQL or other database)
+* 🌐 **RESTful Backend APIs** for Task Management
+* 🖥️ **Clean Frontend UI** for seamless user interaction
 
 ---
 
 ## 🛠️ Tech Stack
-- **Frontend:** HTML, CSS, JavaScript (or React if included)
-- **Backend:** Node.js + Express
-- **Database:** MySQL
-- **Authentication:** JWT (JSON Web Token)
+
+| Layer              | Technology                                      |
+| ------------------ | ----------------------------------------------- |
+| **Frontend**       | HTML, CSS, JavaScript *(or React, if included)* |
+| **Backend**        | Node.js, Express.js                             |
+| **Database**       | MySQL                                           |
+| **Authentication** | JWT (JSON Web Token)                            |
 
 ---
 
 ## 📂 Folder Structure
-- `server/` → Backend APIs (routes, controllers, models)
-- `public/` or `client/` → Frontend code (HTML, CSS, JS)
-- `.env` → Environment variables (port, DB URI, JWT secret)
+
+```
+todo-app/
+│
+├── server/               # Backend (APIs, routes, controllers, models)
+│   ├── routes/
+│   ├── controllers/
+│   ├── models/
+│   ├── config/
+│   └── server.js
+│
+├── public/ or client/    # Frontend (HTML, CSS, JS files)
+│   ├── index.html
+│   ├── style.css
+│   └── script.js
+│
+├── .env                  # Environment variables
+├── package.json
+└── README.md
+```
 
 ---
 
 ## ⚙️ Setup Instructions
 
-1. **Clone this repository**
+1. **Clone the Repository**
+
    ```bash
    git clone <your-repo-link>
    cd todo-app
-````
+   ```
 
-2. **Install dependencies**
+2. **Install Dependencies**
 
    ```bash
+   cd server
    npm install
    ```
 
-3. **Set up environment variables**
-   Create a `.env` file in the project root:
+3. **Set Up Environment Variables**
+   Create a `.env` file inside the `server/` folder and add:
 
-   ```env
+   ```bash
    PORT=5000
-   MONGO_URI=mongodb://127.0.0.1:27017/todoapp
-   JWT_SECRET=your_secret_key
+   DB_HOST=localhost
+   DB_USER=root
+   DB_PASSWORD=yourpassword
+   DB_NAME=todo_app
+   JWT_SECRET=your_jwt_secret
    ```
 
-4. **Run the backend server**
+4. **Start the Backend Server**
 
    ```bash
    npm start
    ```
 
-   The server should start on `http://localhost:5000`.
+   Server runs on [http://localhost:5000](http://localhost:5000)
 
-5. **Access the frontend**
-   Open `http://localhost:5000` in your browser.
+5. **Run the Frontend**
 
----
+   * Open `index.html` from `public/` or `client/` in your browser.
+   * Or, if using React:
 
-## 📌 Notes
-
-* Ensure MongoDB is running locally or update `MONGO_URI` for a cloud database.
-* JWT\_SECRET must be a random secure string for production.
-* Use **Postman** or any REST client to test API endpoints.
-
----
-
-👨‍💻 Maintainer: Arjun Thakur
-
-```
+     ```bash
+     cd client
+     npm install
+     npm start
+     ```
 
 ---
 
+## 📡 API Endpoints
 
+| Method | Endpoint             | Description                   |
+| ------ | -------------------- | ----------------------------- |
+| POST   | `/api/auth/register` | Register new user             |
+| POST   | `/api/auth/login`    | Login and get JWT             |
+| GET    | `/api/tasks`         | Get all tasks (Auth required) |
+| POST   | `/api/tasks`         | Add new task                  |
+| PUT    | `/api/tasks/:id`     | Update task details           |
+| DELETE | `/api/tasks/:id`     | Delete a task                 |
 
-```
+---
 
+## 🧩 Future Improvements
 
+* ⏰ Add task due dates and reminders
+* 📱 Make frontend fully responsive
+* 🌈 Add dark/light theme toggle
+* 🔄 Implement task filtering and sorting
 
+---
+
+## 👨‍💻 Author
+
+**Arjun Thakur**
+💼 Backend Developer | 🌐 MERN Stack Enthusiast
+🔗 [GitHub](https://github.com/2003Arjun)
+
+---
 
