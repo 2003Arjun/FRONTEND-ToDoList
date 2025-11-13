@@ -1,18 +1,93 @@
-# React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+---
 
-Currently, two official plugins are available:
+````markdown
+# Todo App (Fullstack Version)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This is a **fullstack Todo App** project that includes both **frontend and backend (APIs)**.  
+It demonstrates user authentication, task management, and persistent storage using a database.
 
-## React Compiler
+---
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+## 🚀 Features
+- User registration and login (JWT authentication)
+- Add, edit, delete tasks
+- Mark tasks as completed
+- Persistent storage with database (MongoDB or other, depending on configuration)
+- Backend APIs for task management
+- Frontend built for simple user interaction
 
-Note: This will impact Vite dev & build performances.
+---
 
-## Expanding the ESLint configuration
+## 🛠️ Tech Stack
+- **Frontend:** HTML, CSS, JavaScript (or React if included)
+- **Backend:** Node.js + Express
+- **Database:** MongoDB (local or cloud)
+- **Authentication:** JWT (JSON Web Token)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 📂 Folder Structure
+- `server/` → Backend APIs (routes, controllers, models)
+- `public/` or `client/` → Frontend code (HTML, CSS, JS)
+- `.env` → Environment variables (port, DB URI, JWT secret)
+
+---
+
+## ⚙️ Setup Instructions
+
+1. **Clone this repository**
+   ```bash
+   git clone <your-repo-link>
+   cd todo-app
+````
+
+2. **Install dependencies**
+
+   ```bash
+   npm install
+   ```
+
+3. **Set up environment variables**
+   Create a `.env` file in the project root:
+
+   ```env
+   PORT=5000
+   MONGO_URI=mongodb://127.0.0.1:27017/todoapp
+   JWT_SECRET=your_secret_key
+   ```
+
+4. **Run the backend server**
+
+   ```bash
+   npm start
+   ```
+
+   The server should start on `http://localhost:5000`.
+
+5. **Access the frontend**
+   Open `http://localhost:5000` in your browser.
+
+---
+
+## 📌 Notes
+
+* Ensure MongoDB is running locally or update `MONGO_URI` for a cloud database.
+* JWT\_SECRET must be a random secure string for production.
+* Use **Postman** or any REST client to test API endpoints.
+
+---
+
+👨‍💻 Maintainer: Arjun Thakur
+
+```
+
+---
+
+
+
+```
+
+
+
+
