@@ -22,7 +22,7 @@ It demonstrates user authentication, task management, and persistent storage usi
 ## 🛠️ Tech Stack
 - **Frontend:** HTML, CSS, JavaScript (or React if included)
 - **Backend:** Node.js + Express
-- **Database:** MongoDB (local or cloud)
+- **Database:** MySQL
 - **Authentication:** JWT (JSON Web Token)
 
 ---
